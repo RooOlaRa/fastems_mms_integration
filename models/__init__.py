@@ -1,3 +1,2 @@
-from . import res_config_settings
-from . import mrp_production
-from . import mms_report_sync
+from . import mms_binding_mixin
+from . import mms_production_order_binding

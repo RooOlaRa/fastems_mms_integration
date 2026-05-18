@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="mms_production_order_binding_view_form" model="ir.ui.view">
+        <field name="name">mms.production.order.binding.form</field>
+        <field name="model">mms.production.order.binding</field>
+        <field name="arch" type="xml">
+            <form string="MMS Production Order Binding">
+                <header>
+                    <button
+                        name="action_export_to_mms"
+                        string="Export to MMS"
+                        type="object"
+                        class="btn-primary"
+                        attrs="{'invisible': [('sync_state', '=', 'done')]}"
+                    />
+                    <button
+                        name="action_delete_from_mms"
+                        string="Delete from MMS"
+                        type="object"
+                        confirm="This will delete the production order from MMS. Are you sure?"
+                        attrs="{'invisible': [('mms_id', '=', False)]}"
+                    />
+                    <button
+                        name="action_reset_to_pending"
+                        string="Reset to Pending"
+                        type="object"
+                        attrs="{'invisible': [('sync_state', '!=', 'error')]}"
+                    />
+                    <field
+                        name="sync_state"
+                        widget="statusbar"
+                        statusbar_visible="pending,done"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Odoo">
+                            <field name="production_id" />
+                            <field name="backend_id" />
+                            <field name="integration_active" />
+                        </group>
+                        <group string="MMS">
+                            <field name="mms_id" />
+                            <field name="mms_order_number" />
+                            <field name="mms_part_master_data" />
+                            <field name="mms_order_status" />
+                        </group>
+                    </group>
+                    <group string="Sync Info">
+                        <field name="sync_date" />
+                        <field name="sync_error" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mms_production_order_binding_view_list" model="ir.ui.view">
+        <field name="name">mms.production.order.binding.list</field>
+        <field name="model">mms.production.order.binding</field>
+        <field name="arch" type="xml">
+            <list
+                string="MMS Production Order Bindings"
+                decoration-danger="sync_state == 'error'"
+                decoration-success="sync_state == 'done'"
+            >
+                <field name="production_id" />
+                <field name="backend_id" />
+                <field name="mms_order_number" />
+                <field name="mms_part_master_data" />
+                <field name="mms_order_status" />
+                <field name="mms_id" />
+                <field name="sync_state" />
+                <field name="sync_date" />
+            </list>
+        </field>
+    </record>
+
+    <record id="mms_production_order_binding_action" model="ir.actions.act_window">
+        <field name="name">Production Order Bindings</field>
+        <field name="res_model">mms.production.order.binding</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_mms_production_order_bindings"
+        name="Production Order Bindings"
+        parent="menu_mms_root"
+        action="mms_production_order_binding_action"
+        sequence="20"
+    />
+
+</odoo>

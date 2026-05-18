@@ -1,0 +1,82 @@
+<odoo>
+
+    <record id="mms_backend_view_form" model="ir.ui.view">
+        <field name="name">mms.backend.form</field>
+        <field name="model">mms.backend</field>
+        <field name="arch" type="xml">
+            <form string="MMS Backend">
+                <header>
+                    <button
+                        name="action_test_connection"
+                        string="Test Connection"
+                        type="object"
+                        class="btn-primary"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="MMS Backend Name" /></h1>
+                    </div>
+                    <group>
+                        <group string="General">
+                            <field name="company_id" />
+                            <field name="active" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Connection">
+                            <group>
+                                <field name="api_url" />
+                                <field name="auth_method" />
+                                <field name="api_username"
+                                    attrs="{'invisible': [('auth_method', '!=', 'basic')]}" />
+                                <field name="api_password" password="True"
+                                    attrs="{'invisible': [('auth_method', '!=', 'basic')]}" />
+                                <field name="api_key" password="True"
+                                    attrs="{'invisible': [('auth_method', '!=', 'apikey')]}" />
+                            </group>
+                        </page>
+                        <page string="Report Import">
+                            <group>
+                                <field name="import_production_reports" />
+                                <field name="report_batch_limit" />
+                                <field name="last_report_message_number" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="mms_backend_view_list" model="ir.ui.view">
+        <field name="name">mms.backend.list</field>
+        <field name="model">mms.backend</field>
+        <field name="arch" type="xml">
+            <list string="MMS Backends">
+                <field name="name" />
+                <field name="company_id" />
+                <field name="api_url" />
+                <field name="auth_method" />
+                <field name="import_production_reports" />
+                <field name="active" />
+            </list>
+        </field>
+    </record>
+
+    <record id="mms_backend_action" model="ir.actions.act_window">
+        <field name="name">MMS Backends</field>
+        <field name="res_model">mms.backend</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_mms_root" name="MMS Connector" sequence="80" />
+    <menuitem
+        id="menu_mms_backend"
+        name="Backends"
+        parent="menu_mms_root"
+        action="mms_backend_action"
+        sequence="10"
+    />
+
+</odoo>

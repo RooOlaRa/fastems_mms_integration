@@ -7,6 +7,7 @@
     'data': [
         'data/ir_cron.xml',
         'views/mms_production_order_binding_views.xml',
+        'views/mms_backend_views.xml',
     ],
     'installable': True,
     'application': False,

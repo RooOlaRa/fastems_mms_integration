@@ -353,7 +353,7 @@ class MmsProductionOrderBinding(models.Model):
         Attempts to mark the mrp.production as done only when all its
         work orders are already in state 'done'.
         """
-        if production.state not in ("confirmed", "progress"):
+        if production.state not in ("confirmed", "progress", "to_close"):
             _logger.debug(
                 "orders-completed for %s but production state is '%s' – skipping.",
                 production.name, production.state,

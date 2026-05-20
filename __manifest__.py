@@ -11,7 +11,7 @@
         "security/ir.model.access.csv",
         "views/mms_backend_views.xml",
         "views/mms_production_order_binding_views.xml",
-        "data/ir_cron_data.xml",
+        "data/ir_cron.xml",
     ],
     'installable': True,
     'application': False,

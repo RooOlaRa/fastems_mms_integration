@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+
     <record id="mms_production_order_binding_view_form" model="ir.ui.view">
         <field name="name">mms.production.order.binding.form</field>
         <field name="model">mms.production.order.binding</field>
@@ -11,20 +12,20 @@
                         string="Export to MMS"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': [('sync_state', '=', 'done')]}"
+                        invisible="sync_state == 'done'"
                     />
                     <button
                         name="action_delete_from_mms"
                         string="Delete from MMS"
                         type="object"
                         confirm="This will delete the production order from MMS. Are you sure?"
-                        attrs="{'invisible': [('mms_id', '=', False)]}"
+                        invisible="not mms_id"
                     />
                     <button
                         name="action_reset_to_pending"
                         string="Reset to Pending"
                         type="object"
-                        attrs="{'invisible': [('sync_state', '!=', 'error')]}"
+                        invisible="sync_state != 'error'"
                     />
                     <field
                         name="sync_state"
@@ -59,7 +60,7 @@
         <field name="name">mms.production.order.binding.list</field>
         <field name="model">mms.production.order.binding</field>
         <field name="arch" type="xml">
-            <list
+            <tree
                 string="MMS Production Order Bindings"
                 decoration-danger="sync_state == 'error'"
                 decoration-success="sync_state == 'done'"
@@ -72,7 +73,7 @@
                 <field name="mms_id" />
                 <field name="sync_state" />
                 <field name="sync_date" />
-            </list>
+            </tree>
         </field>
     </record>
 

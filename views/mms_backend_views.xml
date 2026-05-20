@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
     <record id="mms_backend_view_form" model="ir.ui.view">
@@ -29,11 +30,11 @@
                                 <field name="api_url" />
                                 <field name="auth_method" />
                                 <field name="api_username"
-                                    attrs="{'invisible': [('auth_method', '!=', 'basic')]}" />
+                                    invisible="auth_method != 'basic'" />
                                 <field name="api_password" password="True"
-                                    attrs="{'invisible': [('auth_method', '!=', 'basic')]}" />
+                                    invisible="auth_method != 'basic'" />
                                 <field name="api_key" password="True"
-                                    attrs="{'invisible': [('auth_method', '!=', 'apikey')]}" />
+                                    invisible="auth_method != 'apikey'" />
                             </group>
                         </page>
                         <page string="Report Import">
@@ -53,14 +54,14 @@
         <field name="name">mms.backend.list</field>
         <field name="model">mms.backend</field>
         <field name="arch" type="xml">
-            <list string="MMS Backends">
+            <tree string="MMS Backends">
                 <field name="name" />
                 <field name="company_id" />
                 <field name="api_url" />
                 <field name="auth_method" />
                 <field name="import_production_reports" />
                 <field name="active" />
-            </list>
+            </tree>
         </field>
     </record>
 

@@ -3,12 +3,17 @@
     'version': '1.0',
     'category': 'Manufacturing',
     'summary': 'Posts manufacturing orders to Fastems MMS and polls for manufacturing reports.',
-    'depends': ['mrp'],
+    'depends': [
+        'mrp',
+        'queue_job',],
+    
     'data': [
-        'data/ir_cron.xml',
-        'views/res_config_settings_views.xml',
+        "security/ir.model.access.csv",
+        "views/mms_backend_views.xml",
+        "views/mms_production_order_binding_views.xml",
+        "data/ir_cron.xml",
     ],
     'installable': True,
     'application': False,
-    'license': 'LGPL-3',
+    'license': 'AGPL-3',
 }

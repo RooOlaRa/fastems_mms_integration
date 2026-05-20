@@ -79,24 +79,38 @@ class MmsBackend(models.Model):
         """Ping the MMS API via the reports endpoint and show result."""
         self.ensure_one()
         try:
-            response = self._make_request(
+            self._make_request(
                 "GET",
                 "/erp/reports/bufferdata",
                 params={"startMessageNumber": 0, "limit": 1},
             )
-            raise UserError(
-                _("Connection successful! MMS API responded HTTP %s.")
-                % response.status_code
-            )
         except requests.exceptions.RequestException as exc:
             raise UserError(_("Connection error: %s") % str(exc)) from exc
 
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Connection successful"),
+                "message": _("MMS API is reachable."),
+                "type": "success",
+                "sticky": False,
+            },
+        }
 
     def cron_export_production_orders(self):
+        """
+        Called by the scheduler.
+        Enqueues one export job per pending binding on every active backend.
+        """
         for backend in self.search([("sync_production_orders", "=", True)]):
             backend.with_delay().job_export_production_orders()
 
     def cron_import_production_reports(self):
+        """
+        Called by the scheduler.
+        Enqueues one import job per active backend.
+        """
         for backend in self.search([("import_production_reports", "=", True)]):
             backend.with_delay().job_import_production_reports()
 

@@ -92,7 +92,7 @@ odoo-worker:
 
 ### 4. Install the module in Odoo
 
-Apps → Update Apps List → search `connector_mms` → Install
+Apps → Update Apps List → search `MMS` → Install Fastems MMS Integration
 
 ---
 

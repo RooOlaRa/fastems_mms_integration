@@ -51,7 +51,7 @@ MMS report messages automatically update the Odoo `mrp.workorder` state:
 ### 1. Copy the module to your addons folder
 
 ```bash
-cp -r connector_mms /mnt/extra-addons/
+cp -r fastems_mms_integration /mnt/extra-addons/
 ```
 
 ### 2. Add `queue_job` to server_wide_modules
@@ -100,7 +100,7 @@ Apps → Update Apps List → search `MMS` → Install Fastems MMS Integration
 
 ### Backend
 
-**MMS Connector → Backends → New**
+**MMS Integration → Backends → New**
 
 | Field | Description |
 |---|---|
@@ -113,26 +113,26 @@ Apps → Update Apps List → search `MMS` → Install Fastems MMS Integration
 | Import Production Reports | Enable automatic import of manufacturing reports |
 | Report Batch Size | Number of reports fetched per polling cycle (default: 100) |
 
-Use the **Test Connection** button to verify connectivity — a success message confirms the API is reachable.
+Use the **Test Connection** button to verify connectivity, a success message confirms the API is reachable.
 
 ### Binding
 
-**MMS Connector → Production Order Bindings → New**
+**MMS Integration → Production Order Bindings → New**
 
 | Field | Description |
 |---|---|
 | Manufacturing Order | The Odoo production order |
 | Backend | The MMS backend to use |
-| MMS Order Number | OrderNumber in MMS — usually the same as the Odoo order name |
-| MMS Part Master Data | Part name in MMS — must already exist in MMS before sending |
+| MMS Order Number | OrderNumber in MMS, usually the same as the Odoo order name |
+| MMS Part Master Data | Part name in MMS, must already exist in MMS before sending |
 | MMS Order Status | `Released` or `Urgent` |
 
 ### Work Order Matching
 
 The module matches the MMS `OperationNumber` to an Odoo `mrp.workorder` using two strategies:
 
-1. **Workcenter name** — the workcenter whose name ends with the operation number integer (e.g. workcenter `"Fms 5 - 10"` matches MMS op `10`)
-2. **Positional fallback** — op `10` → index 0, op `20` → index 1, and so on
+1. **Workcenter name** - the workcenter whose name ends with the operation number integer (e.g. workcenter `"Fms 5 - 10"` matches MMS op `10`)
+2. **Positional fallback** - op `10` → index 0, op `20` → index 1, and so on
 
 ---
 
@@ -164,7 +164,7 @@ Click **Delete from MMS** on the binding form.
 ## Architecture
 
 ```
-connector_mms/
+fastems_mms_integration/
 ├── __manifest__.py
 ├── __init__.py
 ├── models/
@@ -183,11 +183,11 @@ connector_mms/
 
 ### Design
 
-- **API request mixin** — all HTTP logic in one place: URL construction, authentication, headers, error handling
-- **Binding mixin** — abstract base providing external ID tracking and sync state management
-- **Backend** — integration settings and cron trigger methods only
-- **Crons are triggers only** — no business logic inside cron methods, all work is done in queue jobs
-- **Queue jobs** — every API call is executed by the queue_job worker, enabling retries and error visibility
+- **API request mixin** - all HTTP logic in one place: URL construction, authentication, headers, error handling
+- **Binding mixin** - abstract base providing external ID tracking and sync state management
+- **Backend** - integration settings and cron trigger methods only
+- **Crons are triggers only** - no business logic inside cron methods, all work is done in queue jobs
+- **Queue jobs** - every API call is executed by the queue_job worker, enabling retries and error visibility
 
 ---
 
@@ -202,7 +202,7 @@ project/
 ├── docker-compose.yml
 ├── odoo/
 │   ├── addons/
-│   │   └── connector_mms/
+│   │   └── fastems_mms_integration/
 │   ├── config/
 │   │   └── odoo.conf
 │   └── scripts/
@@ -360,7 +360,7 @@ In `mms_mock/mock_mms.py` set `"OrderNumber"` to match the order you just create
 
 **4. Create a backend in Odoo**
 
-MMS Connector → Backends → New:
+MMS Integration → Backends → New:
 - API URL: `http://mms_mock:8080`
 - Auth Method: `HTTP Basic`
 - Username: `test`, Password: `test`
@@ -368,7 +368,7 @@ MMS Connector → Backends → New:
 
 **5. Create a binding**
 
-MMS Connector → Production Order Bindings → New:
+MMS Integration → Production Order Bindings → New:
 - Manufacturing Order: `WH/MO/00001`
 - MMS Order Number: `WH/MO/00001`
 - MMS Part Master Data: `PRT-TEST`
